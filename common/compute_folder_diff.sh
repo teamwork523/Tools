@@ -17,6 +17,8 @@ folder2_filenames=$(ls $folder2 | tee temp2.txt)
 echo "***********************"
 echo "File items diff:"
 echo "***********************"
+echo "temp1 => $folder1"
+echo "temp2 => $folder2"
 diff -u temp1.txt temp2.txt
 
 for i in $folder1_filenames; do
