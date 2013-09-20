@@ -22,7 +22,7 @@ diff -u temp1.txt temp2.txt
 for i in $folder1_filenames; do
     echo ">>>>>>>>>>>>>>>>>>>>>>>>"
     echo "File content diff at $i"
-    diff -u $folder1$i $folder2$i
+    diff -u $folder1/$i $folder2/$i
     echo "<<<<<<<<<<<<<<<<<<<<<<<<"
 done
 
