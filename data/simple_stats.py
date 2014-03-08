@@ -22,12 +22,17 @@ def main():
         header = sys.stdin.readline()
 
     line = sys.stdin.readline()
+    lineCount = 1
     while line != "":
         tempData = line.strip().split(DEL)
-        curData = float(tempData[col_num - 1])
+        try:
+            curData = float(tempData[col_num - 1])
+        except IndexError:
+            print str(lineCount) + DEL + line
         total += curData
         data.append(curData)
         line = sys.stdin.readline()
+        lineCount += 1
     
     sortData = sorted(data)
     dataLen = len(data)
@@ -38,10 +43,12 @@ def main():
     print "Data Summary:"
     print "Mean: " + str(mean)
     print "Min: " + str(sortData[0])
+    print "5%: " + str(sortData[int(dataLen*0.05)])
     print "Q1: " + str(sortData[int(dataLen*0.25)])
     print "Median: " + str(sortData[int(dataLen*0.5)])
     print "Q3: " + str(sortData[int(dataLen*0.75)])
-    print "Max: " + str(sortData[dataLen-1])
+    print "95%: " + str(sortData[int(dataLen*0.95)])
+    print "Max: " + str(sortData[-1])
     print "Std: " + str(math.sqrt(diff_sum/dataLen))
     
 if __name__ == "__main__":

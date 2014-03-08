@@ -4,19 +4,7 @@ import sys, math
 # convert excel type of data into box err bar type (mean std mean std)
 
 def Usage():
-    print sys.argv[0] + " num_col num_group < filepath"
-    print "Sample Data: "
-    print "1: group1_col1  group1_col2"
-    print "2: group1_col1  group1_col2"
-    print "1: group2_col1  group2_col2"
-    print "2: group2_col1  group2_col2"
-
-# create a map between col_id to that col of data
-def create_single_group(num_col):
-    single_group = {}
-    for i in range(num_col):
-        single_group[i] = []
-    return single_group
+    print sys.argv[0] + " label_col(x) data_col(y) header < filepath"
 
 # calculate the standard deviation of the data
 def cal_std (data, mean):
@@ -28,49 +16,61 @@ def cal_std (data, mean):
 def main():
     DEL = "\t"
     data = []
+    pre_defined_label_group = ["PCH", "FACH", "DCH",\
+                               "PCH_TO_FACH", "FACH_TO_DCH",\
+                               "DCH_TO_FACH", "FACH_TO_PCH"]
 
-    if (len(sys.argv) == 2 and sys.argv[1] == "-h") or len(sys.argv) != 3:
+    if (len(sys.argv) == 2 and sys.argv[1] == "-h") or len(sys.argv) != 4:
         Usage()
         sys.exit(1)
 
-    num_col = int(sys.argv[1])
-    num_group = int(sys.argv[2])
+    label_col = int(sys.argv[1]) - 1
+    data_col = int(sys.argv[2]) - 1
+
+    # check header
+    if sys.argv[3] == "y" or sys.argv[3] == "Y":
+        header = sys.stdin.readline()
 
     # read data
-    raw_data = []   
+    dataMap = {}   
     while True:
         line = sys.stdin.readline()
         if not line: break
-        raw_data.append(line.strip().split())
-
-    # convert data into groups of cols
-    cur_row = 0
-    num_row = len(raw_data) / num_group
-    cur_group = None
-    for i in range(num_row)*num_group:
-        if i == 0:
-            cur_group = create_single_group(num_col)
-        cur_data = raw_data.pop(0)
-        for j in range(num_col):
-            cur_group[j].append(float(cur_data[j]))
-        if i == num_row - 1:
-            data.append(cur_group)
+        curData = line.strip().split()
+        label = curData[label_col]
+        data = 0.0
+        try:
+            data = float(curData[data_col])
+        except ValueError:
+            print >> sys.std, "ValueError detected: " + line
+        if dataMap.has_key(label):
+            dataMap[label].append(data)
+        else:
+            dataMap[label] = [data]
     
     # generate the boxErrorBar plot result
-    # format:
-    #   col_id  group1_mean group1_delta    group2_mean group2_delta
-    for i in range(num_col):
-        line = str(i+0.5) + DEL
-        for group_id in range(num_group):
-            mean = float(sum(data[group_id][i]))/float(len(data[group_id][i]))
-            line += str(mean) + DEL + str(cal_std(data[group_id][i], mean)) + DEL
+    sortedLabel = sorted(dataMap.keys())
+    for i in range(len(pre_defined_label_group)):
+        curLabel = pre_defined_label_group[i]
+        line = curLabel + DEL + str(i+0.5) + DEL
+        if dataMap.has_key(curLabel):
+            # myMean = float(sum(dataMap[curLabel]))/float(len(dataMap[curLabel]))
+            # myStd = cal_std(dataMap[curLabel], myMean)
+            data_len = len(dataMap[curLabel])
+            sortedData = sorted(dataMap[curLabel])
+            myMedian = sortedData[int(data_len*0.5)]
+            myLower = sortedData[int(data_len*0.05)]
+            myUpper = sortedData[int(data_len*0.95)]
+        else:
+            # myMean = 0.0
+            # myStd = 0.0
+            myMedian = 0.0
+            myLower = 0.0
+            myUpper = 0.0
+        # line += str(myMean) + DEL + str(myStd) + DEL
+        line += str(myMedian) + DEL + str(myLower) + DEL + str(myUpper) + DEL
         print line.strip()
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
 
