@@ -41,6 +41,7 @@ def main():
     for ele in data:
         diff_sum += (ele-mean)*(ele-mean)
     print "Data Summary:"
+    print "Sum: " + str(total)
     print "Mean: " + str(mean)
     print "Min: " + str(sortData[0])
     print "5%: " + str(sortData[int(dataLen*0.05)])

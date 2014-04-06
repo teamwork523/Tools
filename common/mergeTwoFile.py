@@ -4,6 +4,7 @@ import sys, math
 
 # append two files if both first cols are the same, append the non common cols
 # otherwise append everything the raw by raw
+# Notice that file1 could be empty
 
 def Usage():
     print sys.argv[0] + " file1 file2 cols_from_file2"
@@ -23,7 +24,7 @@ def main():
     while True:
         file1_line = f1.readline()
         file2_line = f2.readline()
-        if (not file1_line) or (not file2_line):
+        if not file2_line:
             break
         l1 = file1_line.strip().split()
         l2 = file2_line.strip().split()
