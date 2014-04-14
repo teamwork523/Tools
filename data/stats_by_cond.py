@@ -41,12 +41,12 @@ def main():
     while True:
         line = sys.stdin.readline()
         if not line: break
-        curData = line.strip().split()
+        curData = line.strip().split(DEL)
 
         try:
             data = float(curData[data_col])
         except ValueError:
-            print >> sys.std, "ValueError detected: " + line
+            print >> sys.stderr, "ValueError detected: " + line
 
         if eval(str(data) + cond):
             print line.strip()

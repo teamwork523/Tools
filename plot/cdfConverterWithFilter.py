@@ -44,7 +44,11 @@ def main():
         i += accurancy
         line = str(float(i/100.0)) + DEL
         for kw in keywords:
-            line += str(data[kw][min(int(i*dataLen[kw]/100.0), dataLen[kw]-1)]) + DEL
+            try:
+                line += str(data[kw][min(int(i*dataLen[kw]/100.0), dataLen[kw]-1)]) + DEL
+            except IndexError:
+                print "Keyword is " + str(kw) + "; length is " + str(len(data[kw]))
+                print "Target index is " + str(min(int(i*dataLen[kw]/100.0), dataLen[kw]-1))
         print line
         
 

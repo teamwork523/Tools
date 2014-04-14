@@ -45,7 +45,7 @@ def main():
         line = sys.stdin.readline()
         if not line: break
         tempData = line.strip().split()
-        category = float(tempData[cat_col])
+        category = tempData[cat_col]
         if category not in dataMap:
             dataMap[category] = {}
             for data_tag in data_cols:
