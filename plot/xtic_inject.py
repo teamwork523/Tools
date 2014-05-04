@@ -3,7 +3,7 @@
 # inject a string / data into a specific col in the file
 import sys, math
 
-INJECT_DEFAULT = 'FACH\\nINIT DCH PCH\\nINIT FACH\\nPROMOTE PCH\\nPROMOTE'
+INJECT_DEFAULT = '500\\n450\\n300\\nPROMOTE PCH\\nPROMOTE'
 
 def Usage():
     print sys.argv[0] + " col_num inject_content < filepath"
@@ -20,7 +20,7 @@ def main():
     num_col = int(sys.argv[1]) - 1
     if num_col < 0:
         num_col = 0
-    inject_data = INJECT_DEFAULT.split(" ")
+    inject_data = sys..argv[2:]
     if len(sys.argv) == 3:
         inject_data = str(sys.argv[2]).split()
 

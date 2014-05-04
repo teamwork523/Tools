@@ -44,14 +44,15 @@ def main():
     while True:
         line = sys.stdin.readline()
         if not line: break
-        tempData = line.strip().split()
+        tempData = line.strip().split(DEL)
         category = tempData[cat_col]
         if category not in dataMap:
             dataMap[category] = {}
             for data_tag in data_cols:
                 dataMap[category][data_tag] = []
         for data_col in data_cols:
-            dataMap[category][data_col].append(float(tempData[data_col]))
+            if float(tempData[data_col]) > 0:
+                dataMap[category][data_col].append(float(tempData[data_col]))
 
     # output result
     for category in sorted(dataMap.keys()):
@@ -59,10 +60,13 @@ def main():
         for data_col in sorted(data_cols):
             sortedResult = sorted(dataMap[category][data_col])
             medianValue = getMedian(sortedResult)
+            line += str(medianValue) + DEL
+            """
             if medianValue >= 0:
                 line += str(medianValue) + DEL
             else:
                 line += str(sortedResult[(int)(0.75*len(sortedResult))]) + DEL
+            """
         print line
 
 if __name__ == "__main__":
