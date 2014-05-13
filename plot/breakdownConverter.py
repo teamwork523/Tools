@@ -55,12 +55,20 @@ def main():
                 dataMap[category][data_col].append(float(tempData[data_col]))
 
     # output result
+    # Mean value
     for category in sorted(dataMap.keys()):
         line = str(category) + DEL
         for data_col in sorted(data_cols):
             sortedResult = sorted(dataMap[category][data_col])
             medianValue = getMedian(sortedResult)
-            line += str(medianValue) + DEL
+            dataLen = len(sortedResult)
+            noOutliarData = sortedResult[(int)(dataLen*0.05):(int)(dataLen*0.95)]
+            mean = sum(noOutliarData) / len(noOutliarData)
+            stderr = math.sqrt(sum([(i - mean)*(i - mean) for i in noOutliarData]) \
+                     / len(noOutliarData))
+            #line += str(medianValue) + DEL
+            line += str(mean) + DEL + str(stderr) + DEL
+            #line += str(medianValue) + DEL + str(stderr) + DEL
             """
             if medianValue >= 0:
                 line += str(medianValue) + DEL

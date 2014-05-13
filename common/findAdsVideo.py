@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# output the video name without advertisement
+# output the video name with advertisement
 
 import sys
 
@@ -22,7 +22,7 @@ def main():
     if sys.argv[-1] == "y" or sys.argv[-1] == "Y":
         header = sys.stdin.readline()
 
-    noAdsList = set([])
+    adsList = set([])
 
     # process input
     line = sys.stdin.readline()
@@ -32,15 +32,13 @@ def main():
 
         try:
             if tempData[ads_check_col] == ads_kw:
-                noAdsList.remove(curVideoName)
-            elif tempData[ads_check_col] == video_begin_kw:
-                noAdsList.add(curVideoName)
+                adsList.add(curVideoName)
         except KeyError:
             pass
         line = sys.stdin.readline()
 
-    for noneAdsVideo in noAdsList:
-        print noneAdsVideo
+    for adsV in adsList:
+        print adsV
 
 if __name__ == "__main__":
     main()
